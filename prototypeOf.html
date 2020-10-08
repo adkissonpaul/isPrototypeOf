@@ -1,0 +1,77 @@
+<script src="../simpleTest.js"></script>
+<script>
+/*
+
+The isPrototypeOf() method checks if an object exists in another object's prototype chain.
+
+  Function signature:
+    prototypeOf(prototypeObj, object)
+  
+    NATIVE: prototypeObj.isPrototypeOf(object)
+
+  Parameters:
+
+
+  Return value: 
+
+
+  Requirements:
+
+
+function prototypeOf() {
+
+};
+
+*/
+
+function isPrototypeOf(prototypeObj, obj) {
+  var findProto = Object.getPrototypeOf(obj);
+  
+  if (findProto === null || findProto === undefined) {
+    return false;
+  }
+  
+  if(prototypeObj === findProto) {
+    return true;
+  } else {
+      return isPrototypeOf(prototypeObj, findProto); 
+  }
+};
+
+tests({
+  'It should return true if an object is in the prototype chain.': function() {
+    var testProtoObj = {
+      greeting: function() {
+        console.log('Hello');
+      }
+    };
+
+    var testObj = Object.create(testProtoObj);
+    var result = isPrototypeOf(testProtoObj, testObj)
+    eq(result, true);
+  },
+  'It should return false if an object is not in the protoype chain.': function() {
+    var testProtoObj = {
+      greeting: function() {
+        console.log('Hello');
+      }
+    };
+
+    var testObj = {name: 'Paul'}
+    var result = isPrototypeOf(testProtoObj, testObj)
+    eq(result, false);
+  },
+  'It should return false if an object is null.': function() {
+    var testProtoObj = {
+      greeting: function() {
+        console.log('Hello');
+      }
+    };
+
+    var testObj = Object.create(null);
+    var result = isPrototypeOf(testProtoObj, testObj);
+    eq(result, false);
+  }
+});
+
+</script>
